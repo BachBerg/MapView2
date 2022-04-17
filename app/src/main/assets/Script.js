@@ -1,13 +1,3 @@
-var bluetoothlng = 12.398112598878498
-var bluetoothlat = 55.731372176608886
-
-const beaconarray = ["12.398112598878498,55.731372176608886", "12.39685695733641,55.731406687433775", "12.397130888937596,55.73155143121474"];
-
-function changeBluetooth(hello) {
-    var name = beaconarray[hello]
-    bluetoothlng=name.substring(0,name.indexOf(","))
-    bluetoothlat=name.substring(name.indexOf(",")+1)
-}
 
 var myMap = new Mazemap.Map({
     // container id specified in the HTML
@@ -115,13 +105,36 @@ function placePoiMarker(poi) {
     myMap.flyTo({center: lngLat, zoom: 19, speed: 0.5});
 }
 
+
+var bluetoothlng = 12.398112598878498
+var bluetoothlat = 55.731372176608886
+
+const beaconarray = ["12.398112598878498,55.731372176608886", "12.39685695733641,55.731406687433775", "12.397130888937596,55.73155143121474"];
+
+
+
+var k
+function changeBluetooth(BeNmbr) {
+    var name = beaconarray[BeNmbr]
+    bluetoothlng=name.substring(0,name.indexOf(","))
+    bluetoothlat=name.substring(name.indexOf(",")+1)
+}
+
+
+function newStart(){
+var start = remember {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: 1};
+start = changeBluetooth();
+}
+
 function makeRoute() {
-    var start = {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: 1};
+    /*var start = {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: 1};*/
+    var newPos = newStart();
+
     var dest = {lngLat: {lng: lngLat.lng, lat: lngLat.lat}, zLevel: zLevel};
 
     routeController = new Mazemap.RouteController(myMap);
 
-    Mazemap.Data.getRouteJSON(start, dest)
+    Mazemap.Data.getRouteJSON(newPos, dest)
         .then(function (geojson) {
             routeController.setPath(geojson);
 
