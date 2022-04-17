@@ -47,7 +47,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BeaconListView(zoneEventViewModel.zoneInfo)
+                    WebViewPage()
+                    //BeaconListView(zoneEventViewModel.zoneInfo);
+
                 }
             }
         }
@@ -64,6 +66,7 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         proximityObservationHandler?.stop()
     }
+
 
     private fun startProximityObservation() {
         proximityObserver = ProximityObserverBuilder(applicationContext, cloudCredentials)
@@ -116,17 +119,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun BeaconListView(zoneInfo: List<BeaconInfo>) {
-    LazyColumn {
-        items(zoneInfo) { beaconInfo ->
-            WebViewPage(beaconInfo)
-        }
-    }
-}
+
 
 @Composable
-fun WebViewPage(beaconInfo: BeaconInfo) {
+fun WebViewPage() {
     AndroidView(factory = {
         val apply = WebView(it).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -134,10 +130,23 @@ fun WebViewPage(beaconInfo: BeaconInfo) {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             webViewClient = WebViewClient()
-            loadUrl("file:///android_asset/Html.html")
+            loadUrl("file:///android_asset/index.html")
         }
         apply.settings.javaScriptEnabled = true
         apply
-    }, //update = { it.loadUrl("file:///android_asset/Html.html"})
-        update = {it.loadUrl("javascript:changeBluetooth(1)")})
+
+    },
+        update = {it.loadUrl("javascript:changeBluetooth(1)") }
+    )
+    println("test 2")
 }
+@Composable
+fun BeaconListView(zoneInfo: List<BeaconInfo>) {
+    LazyColumn {
+        items(zoneInfo) { beaconInfo ->
+            Log.d(TAG, beaconInfo.toString())
+        }
+    }
+}
+
+

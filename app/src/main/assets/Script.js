@@ -113,7 +113,7 @@ const beaconarray = ["12.398112598878498,55.731372176608886", "12.39685695733641
 
 
 
-var k
+var k;
 function changeBluetooth(BeNmbr) {
     var name = beaconarray[BeNmbr]
     bluetoothlng=name.substring(0,name.indexOf(","))
@@ -122,8 +122,8 @@ function changeBluetooth(BeNmbr) {
 
 
 function newStart(){
-var start = remember {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: 1};
-start = changeBluetooth();
+var start = {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: 1}
+start = changeBluetooth()
 }
 
 function makeRoute() {
