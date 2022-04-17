@@ -146,7 +146,7 @@ function makeRoute() {
 
 //blueDot.setLngLatAnimated({lng: bluetoothlng, lat: bluetoothlat});
 //blueDot.setZLevel(Zlelvel);
-
+var f
 
 var mySearch = new Mazemap.Search.SearchController({
     campusid: 88,
