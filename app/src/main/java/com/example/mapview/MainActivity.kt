@@ -16,6 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MapViewTheme {
                 // A surface container using the 'background' color from the theme
@@ -47,10 +49,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    WebViewPage()
-                    //BeaconListView(zoneEventViewModel.zoneInfo);
-
+                    BeaconListView(zoneEventViewModel.zoneInfo);
                 }
+
             }
         }
         // Requirements check
@@ -120,7 +121,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 @Composable
 fun WebViewPage() {
     AndroidView(factory = {
@@ -134,12 +134,14 @@ fun WebViewPage() {
         }
         apply.settings.javaScriptEnabled = true
         apply
-
     },
-        update = {it.loadUrl("javascript:changeBluetooth(1)") }
+        update = {
+            it.loadUrl("file:///android_asset/index.html")
+        }
     )
-    println("test 2")
 }
+
+
 @Composable
 fun BeaconListView(zoneInfo: List<BeaconInfo>) {
     LazyColumn {
@@ -149,4 +151,7 @@ fun BeaconListView(zoneInfo: List<BeaconInfo>) {
     }
 }
 
-
+//Send shit
+//val context = LocalContext.current
+//val notish = Notification(context, "BeaconNumber","hello")
+//notish.sendNotification()
