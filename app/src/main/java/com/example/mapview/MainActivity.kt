@@ -1,7 +1,5 @@
 package com.example.mapview
 
-import android.content.Context
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
@@ -34,7 +32,6 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var proximityObserver: ProximityObserver
     private var proximityObservationHandler: ProximityObserver.Handler? = null
-    val dao = DAO()
 
     private val cloudCredentials = EstimoteCloudCredentials(
         APP_ID,
@@ -45,27 +42,26 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            val context = LocalContext.current
 
+        setContent {
             MapViewTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BeaconListView(zoneEventViewModel.zoneInfo);
+                    BeaconListView(zoneEventViewModel.zoneInfo)
                 }
+
             }
-            RequirementsWizardFactory.createEstimoteRequirementsWizard().fulfillRequirements(
-                this,
-                onRequirementsFulfilled = { startProximityObservation(context) },
-                onRequirementsMissing = displayToastAboutMissingRequirements,
-                onError = displayToastAboutError
-            )
         }
         // Requirements check
-
+        RequirementsWizardFactory.createEstimoteRequirementsWizard().fulfillRequirements(
+            this,
+            onRequirementsFulfilled = { startProximityObservation() },
+            onRequirementsMissing = displayToastAboutMissingRequirements,
+            onError = displayToastAboutError
+        )
     }
 
     override fun onDestroy() {
@@ -74,7 +70,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun startProximityObservation(context : Context) {
+    private fun startProximityObservation() {
         proximityObserver = ProximityObserverBuilder(applicationContext, cloudCredentials)
             .onError(displayToastAboutError)
             .withTelemetryReportingDisabled()
@@ -84,20 +80,19 @@ class MainActivity : ComponentActivity() {
             .build()
 
         val proximityZones = ArrayList<ProximityZone>()
-        proximityZones.add(zoneBuild("lokale1",context))
-        proximityZones.add(zoneBuild("lokale2",context))
-        proximityZones.add(zoneBuild("lokale3",context))
+        proximityZones.add(zoneBuild("Beacon_1"))
+        proximityZones.add(zoneBuild("Beacon_2"))
+        proximityZones.add(zoneBuild("Beacon_3"))
 
         proximityObservationHandler = proximityObserver.startObserving(proximityZones)
     }
 
-    private fun zoneBuild(tag: String,context : Context): ProximityZone {
+    private fun zoneBuild(tag: String): ProximityZone {
         return ProximityZoneBuilder()
             .forTag(tag)
             .inNearRange()
             .onEnter {
                 Log.d(TAG, "Enter: ${it}")
-                dao.readFromDatabase("Beacon_3", context)
             }
             .onExit {
                 Log.d(TAG, "Exit: ${it}")
@@ -150,6 +145,9 @@ fun WebViewPage() {
 
 @Composable
 fun BeaconListView(zoneInfo: List<BeaconInfo>) {
+    val dao = DAO()
+    //val daoData= dao.readFromDatabase("Beacon_1")
+
     LazyColumn {
         items(zoneInfo) { beaconInfo ->
             Log.d(TAG, beaconInfo.toString())
@@ -158,4 +156,6 @@ fun BeaconListView(zoneInfo: List<BeaconInfo>) {
 }
 
 //Send shit
-//
+//val context = LocalContext.current
+//val notish = Notification(context, "BeaconNumber",daoData.toString())
+//notish.sendNotification()
