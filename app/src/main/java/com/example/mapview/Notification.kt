@@ -22,12 +22,12 @@ class Notification(var context:Context, var title:String, var msg:String) {
         notificationChannel = NotificationChannel(channelID,channelName,NotificationManager.IMPORTANCE_HIGH)
         notificationManager.createNotificationChannel(notificationChannel)
 
-        //val intent = Intent(context,MainActivity::class.java)
-        //val pendingIntent=PendingIntent.getActivities(context,0,intent,PendingIntent.FLAG_IMMUTABLE)
+        val intent = Intent(context,MainActivity::class.java)
+        val pendingIntent=PendingIntent.getActivities(context,0,intent,PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder=NotificationCompat.Builder(context,channelID)
         notificationBuilder.setSmallIcon(R.drawable.ic_launcher_background)
-        //notificationBuilder.addAction(R.drawable.ic_launcher_background,"Open Message", pendingIntent)
+        notificationBuilder.addAction(R.drawable.ic_launcher_background,"Open Message", pendingIntent)
         notificationBuilder.setContentTitle(title)
         notificationBuilder.setContentText(msg)
         notificationBuilder.setAutoCancel(true)
