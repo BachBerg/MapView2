@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var proximityObserver: ProximityObserver
     private var proximityObservationHandler: ProximityObserver.Handler? = null
     val dao = DAO()
-    var context : Context = TODO()
+   // var context : Context = TODO()
 
 
     private val cloudCredentials = EstimoteCloudCredentials(
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            context = LocalContext.current
+          //  context = LocalContext.current
             MapViewTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
         // Requirements check
         RequirementsWizardFactory.createEstimoteRequirementsWizard().fulfillRequirements(
             this,
-            onRequirementsFulfilled = { startProximityObservation(context) },
+            onRequirementsFulfilled = { startProximityObservation(this) },
             onRequirementsMissing = displayToastAboutMissingRequirements,
             onError = displayToastAboutError
         )
