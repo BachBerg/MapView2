@@ -24,6 +24,7 @@ import com.estimote.proximity_sdk.api.*
 import com.example.mapview.CloudCredentials.APP_ID
 import com.example.mapview.CloudCredentials.APP_TOKEN
 import com.example.mapview.ui.theme.MapViewTheme
+import kotlin.math.log
 
 private const val TAG = "PROXIMITY"
 
@@ -144,6 +145,9 @@ fun WebViewPage() {
 
 @Composable
 fun BeaconListView(zoneInfo: List<BeaconInfo>) {
+    val dao = DAO()
+    val daoData= dao.readFromDatabase("Beacon_1")
+
     LazyColumn {
         items(zoneInfo) { beaconInfo ->
             Log.d(TAG, beaconInfo.toString())
@@ -153,5 +157,5 @@ fun BeaconListView(zoneInfo: List<BeaconInfo>) {
 
 //Send shit
 //val context = LocalContext.current
-//val notish = Notification(context, "BeaconNumber","hello")
+//val notish = Notification(context, "BeaconNumber",daoData.toString())
 //notish.sendNotification()

@@ -33,6 +33,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854522220137:android:895847f4176a1fc0d81cf8",
+        "android_client_info": {
+          "package_name": "com.example.mapview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854522220137-hnkccrkbjkk3vs561nt47uo691do4bp1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnD0EY3TcGDFbNOcrrltG1J0QSwKJtVWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854522220137-hnkccrkbjkk3vs561nt47uo691do4bp1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
