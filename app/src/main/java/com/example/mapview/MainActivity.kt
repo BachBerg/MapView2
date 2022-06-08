@@ -14,16 +14,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory
 import com.estimote.proximity_sdk.api.*
 import com.example.mapview.CloudCredentials.APP_ID
 import com.example.mapview.CloudCredentials.APP_TOKEN
 import com.example.mapview.ui.theme.MapViewTheme
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.log
 
 private const val TAG = "PROXIMITY"
 
@@ -32,8 +28,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var proximityObserver: ProximityObserver
     private var proximityObservationHandler: ProximityObserver.Handler? = null
     val dao = DAO()
-   // var context : Context = TODO()
-
 
     private val cloudCredentials = EstimoteCloudCredentials(
         APP_ID,
@@ -42,18 +36,19 @@ class MainActivity : ComponentActivity() {
 
     val zoneEventViewModel by viewModels<ZoneEventViewModel>()
 
+    /* The onCreate function is responsible for application setup when first deployed*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-          //  context = LocalContext.current
+            //  context = LocalContext.current
             MapViewTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    //WebViewPage()
-                    BeaconListView(zoneEventViewModel.zoneInfo);
+                    BeaconListView(zoneEventViewModel.zoneInfo)
                 }
             }
         }
@@ -66,10 +61,14 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    /* The onDestroy function is run when the app is terminated */
+
     override fun onDestroy() {
         super.onDestroy()
         proximityObservationHandler?.stop()
     }
+
+    /* This function creates both the proximityObserver and each proximity zone using the zoneBuild method */
 
     private fun startProximityObservation(context: Context) {
         proximityObserver = ProximityObserverBuilder(applicationContext, cloudCredentials)
@@ -122,31 +121,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-/*
-@Composable
-fun WebViewPage() {
-    var apply: WebView
-    var counter = 0
-    if (counter == 0) {
-        AndroidView(
-            factory = {
-                apply = WebView(it).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    webViewClient = WebViewClient()
-                    loadUrl("file:///android_asset/index.html")
-                }
-                apply.settings.javaScriptEnabled = true
-                apply
-            },
-        )
-    } else {
-        apply.evaluateJavascript("changeBluetooth(1)", {})
-    }
-}*/
-
+/* BeaconListView is responsible for managing the dynamic list that contains the beacon info */
 
 @Composable
 fun BeaconListView(zoneInfo: List<BeaconInfo>) {
@@ -156,6 +131,3 @@ fun BeaconListView(zoneInfo: List<BeaconInfo>) {
         }
     }
 }
-
-//Send shit
-//

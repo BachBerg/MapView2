@@ -9,7 +9,7 @@ import com.estimote.proximity_sdk.api.ProximityZoneContext
 
 private const val TAG = "PROXIMITY"
 
-class ZoneEventViewModel: ViewModel() {
+class ZoneEventViewModel : ViewModel() {
     var zoneContexts by mutableStateOf(setOf<ProximityZoneContext>())
 
     fun updateZoneContexts(zoneContexts: Set<ProximityZoneContext>) {
@@ -17,16 +17,19 @@ class ZoneEventViewModel: ViewModel() {
         Log.d(TAG, "ZONE CONTEXTS: ${zoneContexts.toString()}")
     }
 
-    val tag: String get() {
-        if (zoneContexts.count() > 0)
-            return zoneContexts.first().tag
-        else
-            return "No zone"
-    }
+    val tag: String
+        get() {
+            if (zoneContexts.count() > 0)
+                return zoneContexts.first().tag
+            else
+                return "No zone"
+        }
 
-    val zoneInfo: List<BeaconInfo> get() {
-        return zoneContexts.map { it -> BeaconInfo(it.deviceId, it.tag, it.attachments) }.toList()
-    }
+    val zoneInfo: List<BeaconInfo>
+        get() {
+            return zoneContexts.map { it -> BeaconInfo(it.deviceId, it.tag, it.attachments) }
+                .toList()
+        }
 
 }
 
