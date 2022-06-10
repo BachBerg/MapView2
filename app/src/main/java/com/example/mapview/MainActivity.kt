@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
 
     private fun zoneBuild(tag: String, context: Context): ProximityZone {
         return ProximityZoneBuilder()
-            .forTag(tag).inFarRange()
+            .forTag(tag).inCustomRange(10.1)
             .onEnter {
                 Log.d(TAG, "Enter: ${it}")
                 dao.readFromDatabase(tag, context)
