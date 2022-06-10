@@ -17,7 +17,10 @@ class DAO {
             .addOnSuccessListener() { document ->
                 if (document != null) {
                     Log.d(TAG, "Data: ${document.data}")
-                    val notish = Notification(context, "BeaconNumber", "${document.data}")
+
+                    val data = "${document.data}".split(",")
+
+                    val notish = Notification(context, "Du er nu ved position: ", data[1])
                     notish.sendNotification()
                 } else {
                     Log.d(TAG, "Dokumentet findes ikke ")
