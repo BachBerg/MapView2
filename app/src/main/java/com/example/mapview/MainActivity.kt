@@ -3,6 +3,9 @@ package com.example.mapview
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +17,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory
 import com.estimote.proximity_sdk.api.*
@@ -48,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BeaconListView(zoneEventViewModel.zoneInfo)
+                    WebViewPage()
                 }
             }
         }
@@ -130,4 +134,20 @@ fun BeaconListView(zoneInfo: List<BeaconInfo>) {
             Log.d(TAG, beaconInfo.toString())
         }
     }
+}
+
+@Composable
+fun WebViewPage() {
+    AndroidView(factory = {
+        val apply = WebView(it).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            webViewClient = WebViewClient()
+            loadUrl("file:///android_asset/Html.html")
+        }
+        apply.settings.javaScriptEnabled = true
+        apply
+    }, update = { it.loadUrl("file:///android_asset/Html.html")})
 }

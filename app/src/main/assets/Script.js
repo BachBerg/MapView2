@@ -1,13 +1,8 @@
-var bluetoothlng = 12.398112598878498
-var bluetoothlat = 55.731372176608886
+var bluetoothlng=12.395161890820106
+var bluetoothlat=55.73229232272769
+var bluetoothzLevel =2
 
-const beaconarray = ["12.398112598878498,55.731372176608886", "12.39685695733641,55.731406687433775", "12.397130888937596,55.73155143121474"];
-
-function changeBluetooth(hello) {
-    var name = beaconarray[hello]
-    bluetoothlng=name.substring(0,name.indexOf(","))
-    bluetoothlat=name.substring(name.indexOf(",")+1)
-}
+const beacons = ["12.395177992715958|55.73224094676854|2","12.395227634902142|55.73216684335219|2", "12.395162257184722|55.73204114500106|2"];
 
 var myMap = new Mazemap.Map({
     // container id specified in the HTML
@@ -16,13 +11,13 @@ var myMap = new Mazemap.Map({
     campuses: 88,
 
     // initial position in lngLat format
-    center: {lng: 12.397434, lat: 55.731126},
+    center: {lng: 12.3951194, lat: 55.732283006},
     // initial zoom
     zoom: 18,
     scrollZoom: true,
     doubleClickZoom: true,
     touchZoomRotate: true,
-    zLevel: 1
+    zLevel: 2
 });
 
 myMap.on('load', function () {
@@ -39,7 +34,7 @@ myMap.on('load', function () {
     window.blueDot = new Mazemap.BlueDot({
         map: myMap,
     })
-        .setZLevel(1)
+        .setZLevel(bluetoothzLevel)
         .setAccuracy(7)
         .setLngLat({lng: bluetoothlng, lat: bluetoothlat})
         .show();
@@ -49,7 +44,7 @@ myMap.on('load', function () {
 // define a global
 var mazeMarker;
 var lngLat;
-var zLevel;
+var Zlevel;
 var routeController;
 
 
@@ -58,10 +53,10 @@ function onMapClick(e) {
     clearPoiMarker();
 
     lngLat = e.lngLat;
-    zLevel = myMap.zLevel;
+    Zlevel = myMap.zLevel;
 
     // Fetching via Data API
-    Mazemap.Data.getPoiAt(lngLat, zLevel).then(poi => {
+    Mazemap.Data.getPoiAt(lngLat, Zlevel).then(poi => {
 
         printPoiData(poi);
 
@@ -72,27 +67,19 @@ function onMapClick(e) {
     });
 }
 
-function printPoiData(poi) {
-    var poiStr = JSON.stringify(poi, null, 2); // spacing level = 2
-    document.getElementById('poi-data').innerHTML = poiStr;
-
-    console.log(poi.properties.title + " " + lngLat); // Can also look in your console to see the object there
-
-}
-
 function clearPoiMarker() {
     if (mazeMarker) {
         mazeMarker.remove();
     }
-    if (routeController) {
+    if(routeController){
         routeController.clear();
     }
     myMap.highlighter.clear();
 }
 
 function placePoiMarker(poi) {
-    lngLat = Mazemap.Util.getPoiLngLat(poi)
-    zLevel = poi.properties.zValue;
+    lngLat=Mazemap.Util.getPoiLngLat(poi)
+    //Zlevel=poi.properties.zValue;
 
 
     // Get a center point for the POI, because the data can return a polygon instead of just a point sometimes
@@ -103,7 +90,7 @@ function placePoiMarker(poi) {
         innerCircleColor: '#FFF',
         size: 34,
         innerCircleScale: 0.5,
-        zLevel: zLevel
+        zLevel: Zlevel
     })
         .setLngLat(lngLat)
         .addTo(myMap);
@@ -115,9 +102,18 @@ function placePoiMarker(poi) {
     myMap.flyTo({center: lngLat, zoom: 19, speed: 0.5});
 }
 
+function printPoiData(poi) {
+    var poiStr = JSON.stringify(poi, null, 2); // spacing level = 2
+    document.getElementById('poi-data').innerHTML = poiStr;
+
+    console.log(poi.properties.title + " " + lngLat+Zlevel); // Can also look in your console to see the object there
+
+}
+
 function makeRoute() {
-    var start = {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: 1};
-    var dest = {lngLat: {lng: lngLat.lng, lat: lngLat.lat}, zLevel: zLevel};
+    var start = {lngLat: {lng: bluetoothlng, lat: bluetoothlat}, zLevel: bluetoothzLevel};
+    var dest = {lngLat: {lng: lngLat.lng, lat: lngLat.lat}, zLevel: Zlevel};
+
 
     routeController = new Mazemap.RouteController(myMap);
 
@@ -131,9 +127,12 @@ function makeRoute() {
         });
 }
 
-//blueDot.setLngLatAnimated({lng: bluetoothlng, lat: bluetoothlat});
-//blueDot.setZLevel(Zlelvel);
+function changeDot(beaconnumber){
+    data=beacons[beaconnumber].split('|')
 
+    blueDot.setLngLatAnimated({lng: data[0], lat: data[1]});
+    //blueDot.setZLevel(data[2]);
+}
 
 var mySearch = new Mazemap.Search.SearchController({
     campusid: 88,
@@ -153,7 +152,7 @@ var mySearchInput = new Mazemap.Search.SearchInput({
     input: document.getElementById('searchInput'),
     suggestions: document.getElementById('suggestions'),
     searchController: mySearch
-}).on('itemclick', function (e) {
+}).on('itemclick', function(e){
 
     var poiFeature = e.item;
     clearPoiMarker()
