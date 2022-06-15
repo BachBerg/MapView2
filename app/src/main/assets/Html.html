@@ -22,44 +22,71 @@
         }
 
         #button {
-            color: white;
-            width: 100%;
-            background-color: blue;
-            text-align: center;
-            bottom: 1%;
             position: absolute;
+            width: 50%;
             height: 4%;
+            /*bottom: 1%;*/
+            top:9%;
+            left: 6%;
+            color: white;
+            background-color: rgb(14,168,61);
+            text-align: center;
             font-size: larger;
+            border-radius:20px;
+            border: 3px solid black;
+            font-weight: bold;
+            padding: 6px;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
         }
 
         #search-input-container {
             position: absolute;
             margin-left: calc((100% - 20px) * (-1 / 2));
             top: 10px;
-            width: calc(100% - 20px);
+            width: 70%;
             left: 50%;
-            max-width: 300px;
             z-index: 999;
+        }
+        #searchInput {
+        height: 60px;
+        font-style: bold;
+        text-size: 20px
         }
 
         #BeaconButtons{
             color:white;
             padding :2px;
-            bottom :7%;
-            right :3%;
+            bottom :1%;
+            right :26%;
+
             border-color :black;
+            border-radius: 5px;
             position: absolute;
-            background: rgb(48, 152, 252);
+            background-color: rgb(125,200,260);
             z-index: 999;
-            height: 13%;
-            width: 20%;
-            font-size: 30px;
-        }
-        .but{
-            width: 30%;
-            height: 50%
+            height: 70px;
+            width: 200px;
+            font-size: 15px;
+            border: 1px solid black;
+            text-shadow: -0.5px 0 black, 0 0.5px black, 0.5px 0 black, 0 -0.5px black;
+
+
 
         }
+        .but{
+            width: 32%;
+            height: 40px;
+            /*display: block;*/
+            border-raidus:2px;
+            margin-bottom: 2px;
+
+        }
+        .but:focus{
+            color: white;
+            background: rgb(48, 152, 252);
+        }
+
 
 
     </style>
@@ -70,14 +97,14 @@
     <hr/>
     <pre><code id="poi-data"></code></pre>
 </div>
-<div id="button" onclick="makeRoute()">Navigate</div>
+<div id="button" onclick="makeRouteWithChange()">Start Navigation</div>
 <div id="search-input-container" class='search-control-default'>
     <input tabindex="0" id="searchInput" class="search-input" autocomplete="off" type="text" name='search'
            placeholder='Search'>
     <div id="suggestions" class="search-suggestions default"></div>
 </div>
 
-<div id="BeaconButtons">Beacon nummer <br>
+<div id="BeaconButtons">Position<br>
     <button class="but" onclick="changeDot(0)">1</button>
     <button class="but" onclick="changeDot(1)">2</button>
     <button class="but" onclick="changeDot(2)">3</button>
